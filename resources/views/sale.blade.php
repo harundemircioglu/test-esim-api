@@ -1,20 +1,53 @@
 @extends('layouts.master')
 
 @section('content')
-    <div>
-        <h1>Ödeme Bilgileri</h1>
+    <div class="my-6">
+        <h1 class="font-bold text-xl">PAKET BİLGİLERİ</h1>
         <p>{{ $esim_data['title'] }}</p>
         <p>{{ $esim_data['fiyat'] }}</p>
     </div>
 
-    <form action="{{ route('sale.confirmSale') }}" method="POST">
+    <form action="{{ route('sale.confirmSale') }}" method="POST" class="bg-gray-100 p-6 rounded-lg shadow-md">
         @csrf
-        <input type="hidden" name="id" value="{{ $esim_data['id'] }}">
-        <input type="text" name="kartCvv" value="{{ old('kartCvv') }}">
-        <input type="text" name="kartNo" value="{{ old('kartNo') }}">
-        <input type="date" name="kartSonKullanmaTarihi" value="{{ old('kartSonKullanmaTarihi') }}">
-        <input type="text" name="kartSahibi" value="{{ old('kartSahibi') }}">
-        <input type="text" name="taksitSayisi" value="{{ old('taksitSayisi') }}">
-        <button>Öde</button>
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="kartNo" class="block mb-2 text-sm font-medium text-gray-900">Kart Numarası</label>
+
+                <input type="text" id="kartNo" name="kartNo"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Kart Numarası" value="{{ old('kartNo') }}" required />
+            </div>
+            <div>
+                <label for="kartSahibi" class="block mb-2 text-sm font-medium text-gray-900">Kart Sahibi</label>
+
+                <input type="text" id="kartSahibi" name="kartSahibi"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Kart Sahibi" value="{{ old('kartSahibi') }}" required />
+            </div>
+            <div>
+                <label for="kartCvv" class="block mb-2 text-sm font-medium text-gray-900">CVV</label>
+
+                <input type="text" id="kartCvv" name="kartCvv"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="CVV" value="{{ old('kartCvv') }}" required />
+            </div>
+            <div>
+                <label for="kartSonKullanmaTarihi" class="block mb-2 text-sm font-medium text-gray-900">Geçerlilik
+                    Tarihi</label>
+
+                <input type="date" id="kartSonKullanmaTarihi" name="kartSonKullanmaTarihi"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Geçerlilik Tarihi" value="{{ old('kartSonKullanmaTarihi') }}" required />
+            </div>
+            <div>
+                <label for="taksitSayisi" class="block mb-2 text-sm font-medium text-gray-900">Taksit Sayısı</label>
+
+                <input type="number" id="taksitSayisi" name="taksitSayisi"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Taksit Sayısı" min="1" value="{{ old('taksitSayisi') }}" required />
+            </div>
+        </div>
+        <button type="submit" name="id" value="{{ $esim_data['id'] }}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Öde</button>
     </form>
 @endsection
