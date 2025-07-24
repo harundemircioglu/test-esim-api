@@ -21,13 +21,14 @@ class CountryService
         }
     }
 
-    public function getCountryCoverages(Request $request, string $countryCode)
+    public function getCountryCoverages($filterData = [])
     {
         $baseUrl = config('app.base_url');
         $token = config('app.token');
 
-        $dataAmount = $request->query('dataAmount');
-        $validityPeriod = $request->query('validityPeriod');
+        $dataAmount = $filterData['dataAmount'];
+        $validityPeriod = $filterData['validityPeriod'];
+        $countryCode = $filterData['countryCode'];
 
         $response = Http::withHeader('token', $token)->get("{$baseUrl}/partner/v1/esim/coverages/{$countryCode}");
 
