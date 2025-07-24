@@ -17,6 +17,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'base_url' => env('BASE_URL'),
+    'token' => env('TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
