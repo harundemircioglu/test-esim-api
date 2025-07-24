@@ -4,7 +4,6 @@ namespace App\Http;
 
 use App\Http\Middleware\CheckConfirm;
 use App\Http\Middleware\CheckSale;
-use App\Http\Middleware\CheckSoldData;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -69,6 +68,5 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.sale' => CheckSale::class,
         'check.confirm' => CheckConfirm::class,
-        'check.sold.data' => CheckSoldData::class,
     ];
 }

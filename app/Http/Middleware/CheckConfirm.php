@@ -16,12 +16,12 @@ class CheckConfirm
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Cache::has('esim_data')) {
-            return redirect()->route('home');
-        }
-
-        if (Cache::has('sold_data')) {
-            return redirect()->route('sale.confirm');
+        if (!Cache::has('sold_data')) {
+            if (Cache::has('esim_data')) {
+                return redirect()->route('sale.index');
+            } else {
+                return redirect()->route('home');
+            }
         }
 
         return $next($request);
