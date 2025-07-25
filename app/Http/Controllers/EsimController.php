@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class EsimController extends Controller
 {
@@ -19,20 +20,29 @@ class EsimController extends Controller
         $baseUrl = config('app.base_url');
         $token = config('app.token');
 
-        $response = Http::withHeader('token', $token)->post("{$baseUrl}/partner/v1/esim/create", [
-            'api_id' => $request->input('api_id'),
-            'gsm_no' => $request->input('gsm_no'),
-            'email' => $request->input('email'),
-        ]);
+        try {
+            $response = Http::withHeader('token', $token)->post("{$baseUrl}/partner/v1/esim/create", [
+                'api_id' => $request->input('api_id'),
+                'gsm_no' => $request->input('gsm_no'),
+                'email' => $request->input('email'),
+            ]);
 
-        if ($response->successful() && isset($response['status']) && $response['status'] == true) {
-            if (isset($response['sold_esim'])) {
-                Cache::put('esim_data', $response['sold_esim'], 3600);
+            if ($response->successful() && isset($response['status']) && $response['status'] == true) {
+                if (isset($response['sold_esim'])) {
+                    Cache::put('esim_data', $response['sold_esim'], 3600);
 
-                return redirect()->route('sale.index')->with([
-                    'success' => 'ESim successfully created and added to cart.',
+                    return redirect()->route('sale.index')->with([
+                        'success' => $response['message'] ?? 'eSIM created successfully.',
+                    ]);
+                }
+            } else {
+                return redirect()->back()->with([
+                    'error' => $response['message'] ?? 'Failed to create eSIM.',
                 ]);
             }
+        } catch (\Throwable $th) {
+            Log::error('Error creating eSIM: ' . $th->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while creating the eSIM.');
         }
     }
 }
