@@ -127,6 +127,11 @@
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                                                 placeholder="GSM No" value="{{ old('gsm_no') }}"
                                                                 required="">
+
+                                                            @error('gsm_no')
+                                                                <div class="text-red-600 text-sm mt-1">{{ $message }}
+                                                                </div>
+                                                            @enderror
                                                         </div>
                                                         <div class="col-span-2">
                                                             <label for="email-{{ $coverage['id'] }}"
@@ -137,6 +142,11 @@
                                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                                                 placeholder="Email" value="{{ old('email') }}"
                                                                 required="">
+
+                                                            @error('email')
+                                                                <div class="text-red-600 text-sm mt-1">{{ $message }}
+                                                                </div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <button type="submit" name="api_id" value="{{ $coverage['api_id'] }}"

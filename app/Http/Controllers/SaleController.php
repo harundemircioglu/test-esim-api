@@ -27,11 +27,28 @@ class SaleController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'kartCvv' => 'required',
-            'kartNo' => 'required',
-            'kartSonKullanmaTarihi' => 'required',
+            'kartCvv' => ['required', 'digits:3'],
+            'kartNo' => ['required', 'digits:16'],
+            'kartSonKullanmaTarihi' => ['required', 'date', 'after:today'],
             'kartSahibi' => 'required',
-            'taksitSayisi' => 'required',
+            'taksitSayisi' => ['required', 'integer', 'min:1', 'max:12'],
+        ], [
+            'kartCvv.required' => 'Kart CVV kodu zorunludur.',
+            'kartCvv.digits' => 'Kart CVV kodu 3 rakamdan oluşmalıdır.',
+
+            'kartNo.required' => 'Kart numarası zorunludur.',
+            'kartNo.digits' => 'Kart numarası 16 rakamdan oluşmalıdır.',
+
+            'kartSonKullanmaTarihi.required' => 'Kart son kullanma tarihi zorunludur.',
+            'kartSonKullanmaTarihi.date' => 'Geçerli bir tarih giriniz.',
+            'kartSonKullanmaTarihi.after' => 'Kart son kullanma tarihi bugünden sonraki bir tarih olmalıdır.',
+
+            'kartSahibi.required' => 'Kart sahibi adı zorunludur.',
+
+            'taksitSayisi.required' => 'Taksit sayısı zorunludur.',
+            'taksitSayisi.integer' => 'Taksit sayısı bir sayı olmalıdır.',
+            'taksitSayisi.min' => 'Taksit sayısı en az 1 olmalıdır.',
+            'taksitSayisi.max' => 'Taksit sayısı en fazla 12 olabilir.',
         ]);
 
         $baseUrl = config('app.base_url');
@@ -52,17 +69,17 @@ class SaleController extends Controller
                     Cache::put('sold_data', $response['sold_esim'], 3600);
 
                     return redirect()->route('sale.confirm')->with([
-                        'success' => $response['message'] ?? 'eSIM purchase confirmed successfully.',
+                        'success' => $response['message'] ?? 'Ödeme işlemi başarılı.',
                     ]);
                 }
             } else {
                 return redirect()->back()->with([
-                    'error' => $response['message'] ?? 'Failed to confirm eSIM purchase.',
+                    'error' => $response['message'] ?? 'Ödeme işlemi başarısız.',
                 ]);
             }
         } catch (\Throwable $th) {
             Log::error('Error confirming eSIM purchase: ' . $th->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while confirming the eSIM purchase.');
+            return redirect()->back()->with('error', 'Beklenmeyen bir hata ile karşılaşıldı.');
         }
     }
 }

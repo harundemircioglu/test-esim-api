@@ -15,7 +15,13 @@
 
                 <input type="text" id="kartNo" name="kartNo"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Kart Numarası" value="{{ old('kartNo') }}" required />
+                    placeholder="Kart Numarası" maxlength="16" pattern="\d{16}" inputmode="numeric"
+                    value="{{ old('kartNo') }}" required />
+
+                @error('kartNo')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}
+                    </div>
+                @enderror
             </div>
             <div>
                 <label for="kartSahibi" class="block mb-2 text-sm font-medium text-gray-900">Kart Sahibi</label>
@@ -23,13 +29,24 @@
                 <input type="text" id="kartSahibi" name="kartSahibi"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Kart Sahibi" value="{{ old('kartSahibi') }}" required />
+
+                @error('kartSahibi')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}
+                    </div>
+                @enderror
             </div>
             <div>
                 <label for="kartCvv" class="block mb-2 text-sm font-medium text-gray-900">CVV</label>
 
                 <input type="text" id="kartCvv" name="kartCvv"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="CVV" value="{{ old('kartCvv') }}" required />
+                    placeholder="CVV" maxlength="3" pattern="\d{3}" inputmode="numeric" value="{{ old('kartCvv') }}"
+                    required />
+
+                @error('kartCvv')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}
+                    </div>
+                @enderror
             </div>
             <div>
                 <label for="kartSonKullanmaTarihi" class="block mb-2 text-sm font-medium text-gray-900">Geçerlilik
@@ -38,13 +55,23 @@
                 <input type="date" id="kartSonKullanmaTarihi" name="kartSonKullanmaTarihi"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Geçerlilik Tarihi" value="{{ old('kartSonKullanmaTarihi') }}" required />
+
+                @error('kartSonKullanmaTarihi')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}
+                    </div>
+                @enderror
             </div>
             <div>
                 <label for="taksitSayisi" class="block mb-2 text-sm font-medium text-gray-900">Taksit Sayısı</label>
 
                 <input type="number" id="taksitSayisi" name="taksitSayisi"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Taksit Sayısı" min="1" value="{{ old('taksitSayisi') }}" required />
+                    placeholder="Taksit Sayısı" min="1" max="12" value="{{ old('taksitSayisi') }}" required />
+
+                @error('taksitSayisi')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}
+                    </div>
+                @enderror
             </div>
         </div>
         <button type="submit" name="id" value="{{ $esim_data['id'] }}"

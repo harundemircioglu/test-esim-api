@@ -13,8 +13,14 @@ class EsimController extends Controller
     {
         $request->validate([
             'api_id' => 'required',
-            'gsm_no' => 'required',
-            'email' => 'required',
+            'gsm_no' => ['required', 'digits:10'],
+            'email' => ['required', 'email'],
+        ], [
+            'gsm_no.required' => 'Cep telefonu numarası zorunludur.',
+            'gsm_no.digits' => 'Cep telefonu numarası 10 rakamdan oluşmalıdır.',
+
+            'email.required' => 'E-posta adresi zorunludur.',
+            'email.email' => 'Geçerli bir e-posta adresi giriniz.',
         ]);
 
         $baseUrl = config('app.base_url');
@@ -32,17 +38,17 @@ class EsimController extends Controller
                     Cache::put('esim_data', $response['sold_esim'], 3600);
 
                     return redirect()->route('sale.index')->with([
-                        'success' => $response['message'] ?? 'eSIM created successfully.',
+                        'success' => $response['message'] ?? 'Sepete ekleme işlemi başarılı.',
                     ]);
                 }
             } else {
                 return redirect()->back()->with([
-                    'error' => $response['message'] ?? 'Failed to create eSIM.',
+                    'error' => $response['message'] ?? 'Sepete ekleme işlemi başarısız.',
                 ]);
             }
         } catch (\Throwable $th) {
             Log::error('Error creating eSIM: ' . $th->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while creating the eSIM.');
+            return redirect()->back()->with('error', 'Beklenmeyen bir hata ile karşılaşıldı.');
         }
     }
 }
